@@ -1,4 +1,4 @@
-package com.example
+package com.textminer
 
 object Hello {
   def main(args: Array[String]): Unit = {
