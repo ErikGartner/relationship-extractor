@@ -13,7 +13,7 @@ class CoreNLPNERTests extends FlatSpec with Matchers {
     val expected = Seq("Harry")
 
     actual.size should be (1)
-    actual(0).name should be (expected[0])
+    actual(0).name should be (expected(0))
 
   }
 
