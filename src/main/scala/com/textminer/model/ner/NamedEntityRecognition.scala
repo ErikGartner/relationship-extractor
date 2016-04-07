@@ -5,4 +5,6 @@ package com.textminer.model.ner
   */
 trait NamedEntityRecognition {
 
+  def persons(): Seq[Person]
+
 }
