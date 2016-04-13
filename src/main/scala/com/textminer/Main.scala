@@ -2,6 +2,8 @@ package com.textminer
 import java.util
 import java.util.Properties
 
+import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation
+import edu.stanford.nlp.hcoref.CorefCoreAnnotations.CorefMentionsAnnotation
 import edu.stanford.nlp.ie.util.RelationTriple
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.ling.{CoreLabel, Sentence}
@@ -12,6 +14,7 @@ import edu.stanford.nlp.semgraph.SemanticGraph
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation
 import edu.stanford.nlp.trees.Tree
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
 
 import scala.collection.JavaConverters._
@@ -19,13 +22,15 @@ import scala.collection.JavaConverters._
 
 object Main extends App {
 
-  val text = "Harry Potter likes Cat. He is also a wizard. The wizard does not like witches. Hermione is a witch. She is a very smart witch. Harry is the son of God. Erik is father to Josef."
+  val text = "Harry Potter is the son of Jessica Simpson. Eric is likes ice cream. He is the father to Josef."
   val relations = Set("son", "father", "mother", "brother", "sister")
 
   val props = new Properties()
-  props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie");
-  val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 2)
+  //props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie");
+  //val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 2)
   // val pipeline = new StanfordCoreNLP(props)
+  props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie");
+  val pipeline= new StanfordCoreNLP(props)
 
   // create an empty Annotation just with the given text
   val document = new Annotation(text)
@@ -50,11 +55,20 @@ object Main extends App {
       }
     }
 
-    if(res.nonEmpty)
-      println(s"Sentence: ${res.get} => ${res.get.subjectLemmaGloss()} - ${res.get.relationLemmaGloss()} - ${res.get.objectLemmaGloss()}")
+    if(res.nonEmpty){
+      val t = res.get
+      println(s"Sentence: ${t} => ${t.subjectLemmaGloss()} - ${t.relationLemmaGloss()} - ${t.objectLemmaGloss()}")
+      for (m  <- sentence.get(classOf[CorefMentionsAnnotation]).asScala) {
+        println("\t" + m)
+      }
+    }
+
 
   }
 
+  for (cc <- document.get(classOf[CorefChainAnnotation]).values().asScala) {
+    println("\t"+cc);
+  }
 
 
 }
