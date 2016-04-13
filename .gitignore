@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/scala,osx,java,sbt,intellij,eclipse
 
+# Server log
+server.log
+
 ### Scala ###
 *.class
 *.log
