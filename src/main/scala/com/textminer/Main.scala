@@ -7,7 +7,7 @@ import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.ling.{CoreLabel, Sentence}
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations.RelationTriplesAnnotation
 import edu.stanford.nlp.naturalli.OpenIE
-import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP, StanfordCoreNLPClient}
 import edu.stanford.nlp.semgraph.SemanticGraph
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation
 import edu.stanford.nlp.trees.Tree
@@ -24,7 +24,8 @@ object Main extends App {
 
   val props = new Properties()
   props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie");
-  val pipeline= new StanfordCoreNLP(props)
+  val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 2)
+  // val pipeline = new StanfordCoreNLP(props)
 
   // create an empty Annotation just with the given text
   val document = new Annotation(text)
@@ -40,6 +41,7 @@ object Main extends App {
 
     val oie = sentence.get(classOf[RelationTriplesAnnotation]).asScala
     var res:Option[RelationTriple] = None
+
     for(triple:RelationTriple <- oie) {
       for(relation <- relations) {
         if(triple.relationLemmaGloss.toLowerCase.contains(relation)) {
