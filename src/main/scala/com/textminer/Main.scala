@@ -25,13 +25,12 @@ import scala.collection.mutable
 
 object Main extends App {
 
-  val text = "Harry Potter is the son of Jessica Simpson. Eric is likes ice cream. He is the father to Josef."
   val relations = Relation.getRelations.get.flatMap(rel => Relation.getRelationLabels(rel))
-
+  val text:String = scala.io.Source.fromFile("data/corpus/dorian.txt").mkString
+  
   val props = new Properties()
-  //props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie");
   props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie")
-  val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 4)
+  val pipeline = new StanfordCoreNLP()//(props, "localhost", 9000, 4)
 
   // create an empty Annotation just with the given text
   val document = new Annotation(text)
