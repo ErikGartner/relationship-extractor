@@ -3,14 +3,14 @@
     "title": "brother",
     "id": "P7",
     "description": "male sibling",
-    "english": ["bro"],
+    "english": ["bro", "brother"],
     "swedish": ["broder", "bror", "brorsa"]
   },
   {
     "title": "father",
     "id": "P22",
     "description": "the male parent",
-    "english": ["dad", "daddy"],
+    "english": ["father", "dad", "daddy"],
     "swedish": ["far", "fader"]
   },
   {
@@ -31,14 +31,14 @@
     "title": "mother",
     "id": "P25",
     "description": "the female parent",
-    "english": ["mum", "mummy"],
+    "english": ["mother", "mum", "mummy"],
     "swedish": ["mamma", "moder", "mor"]
   },
   {
     "title": "child",
     "id": "P40",
     "description": "offspring: subject has the object in their family as their offspring son or daughter (independently of their age)",
-    "english": ["offspring", "kid"],
+    "english": ["son", "daughter", "kid", "child"],
     "swedish": ["unge", "barn", "avkomma"]
   },
   {

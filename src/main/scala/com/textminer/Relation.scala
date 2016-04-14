@@ -34,6 +34,10 @@ object Relation {
   }
 
   def getRelationLabels(relation: Relation): Seq[String] = {
-    relation.english.getOrElse(Nil) :+ relation.title
+    relation.english.getOrElse(Nil)
+  }
+
+  def getSwedishRelationLabels(relation: Relation): Seq[String] = {
+    relation.swedish.getOrElse(Nil)
   }
 }
