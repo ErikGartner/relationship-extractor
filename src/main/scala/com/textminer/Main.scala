@@ -26,7 +26,7 @@ import scala.collection.mutable
 object Main extends App {
 
   val text = "Harry Potter is the son of Jessica Simpson. Eric is likes ice cream. He is the father to Josef."
-  val relations = Set("son", "father", "mother", "brother", "sister")
+  val relations = Relation.getRelations.get.flatMap(rel => Relation.getRelationLabels(rel))
 
   val props = new Properties()
   //props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie");

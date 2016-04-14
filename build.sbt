@@ -18,6 +18,10 @@ libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.21"
 libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.21"
 
 
+// We use Play frameworks JSON library
+resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+
+libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
 
 
 // Uncomment to use Akka

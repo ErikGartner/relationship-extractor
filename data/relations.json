@@ -1,0 +1,79 @@
+[
+  {
+    "title": "brother",
+    "id": "P7",
+    "description": "male sibling",
+    "english": ["bro"],
+    "swedish": ["broder", "bror", "brorsa"]
+  },
+  {
+    "title": "father",
+    "id": "P22",
+    "description": "the male parent",
+    "english": ["dad", "daddy"],
+    "swedish": ["far", "fader"]
+  },
+  {
+    "title": "godparent",
+    "id": "P1290",
+    "description": "person who is the godparent of a given person",
+    "english": ["godmother", "godfather"],
+    "swedish": ["gudfar", "dumor", "gudson", "gudfader", "gudmoder", "gudförälder", "guddotter"]
+  },
+  {
+    "title": "relative",
+    "id": "P1038",
+    "description": "kinship, family member",
+    "english": ["relative", "family", "family member"],
+    "swedish": ["släkt", "släkting", "familjemedlem"]
+  },
+  {
+    "title": "mother",
+    "id": "P25",
+    "description": "the female parent",
+    "english": ["mum", "mummy"],
+    "swedish": ["mamma", "moder", "mor"]
+  },
+  {
+    "title": "child",
+    "id": "P40",
+    "description": "offspring: subject has the object in their family as their offspring son or daughter (independently of their age)",
+    "english": ["offspring", "kid"],
+    "swedish": ["unge", "barn", "avkomma"]
+  },
+  {
+    "title": "sister",
+    "id": "P9",
+    "description": "the female sibling",
+    "english": ["sis"],
+    "swedish": ["syster", "syrra"]
+  },
+  {
+    "title": "partner",
+    "id": "P451",
+    "description": "someone with whom the person is in a relationship without being married. Use \"spouse\" for married couples",
+    "english": ["partner", "mistress", "domestic parnter", "significant other", "life partner", "girlfriend", "boyfriend", "concubine", "lover", "common-law spouse", "cohabitant"],
+    "swedish": ["sambo", "partner", "livspartner"]
+  },
+  {
+    "title": "spouse",
+    "id": "P26",
+    "description": "the subject has the object as their spouse (husband, wife, partner, etc.).",
+    "english": ["husband", "wife", "married to", "consort", "partner", "marry"],
+    "swedish": ["make", "maka", "gemål", "hustru", "fru", "man", "gift med"]
+  },
+  {
+    "title": "stepfather",
+    "id": "P43",
+    "description": "husband of the subject's mother, who is not the subject's biological father",
+    "english": ["step father", "step-father"],
+    "swedish": ["fosterfar", "styvar"]
+  },
+  {
+    "title": "stepmother",
+    "id": "P44",
+    "description": "wife of the subject's father, who is not the subject's biological mother",
+    "english": ["step mother", "step-mother"],
+    "swedish": ["fostermor", "styvmor"]
+  }
+]
