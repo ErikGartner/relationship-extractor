@@ -1,4 +1,5 @@
-package com.textminer
+package relationshipextractor
+
 import java.util
 import java.util.Properties
 
@@ -27,10 +28,10 @@ object Main extends App {
 
   val relations = Relation.getRelations.get.flatMap(rel => Relation.getRelationLabels(rel))
   val text:String = scala.io.Source.fromFile("data/corpus/dorian.txt").mkString
-  
+
   val props = new Properties()
   props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie")
-  val pipeline = new StanfordCoreNLP()//(props, "localhost", 9000, 4)
+  val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 4)
 
   // create an empty Annotation just with the given text
   val document = new Annotation(text)
