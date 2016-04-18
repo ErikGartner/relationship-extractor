@@ -1,5 +1,6 @@
 # Relationship Extractor
 **Work in progress!**
+
 *This scala program runs CoreNLP to extract basic relationships defined in a json such as "father", "mother" etc from a text.*
 
 The purpose of this program is to extact relationship between persons (named entities) in a text.
