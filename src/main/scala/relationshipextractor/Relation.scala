@@ -1,4 +1,4 @@
-package com.textminer
+package relationshipextractor
 
 import play.api.libs.json._
 import scala.io.Source.{ fromFile }
