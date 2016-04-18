@@ -14,7 +14,7 @@ By default it uses the CoreNLP server to speed up multiple calls.
 
 - To get all dependencies the first time use ```sbt compile```
 - Start the CoreNLP server by running ```./run_server.sh```
-- Run the program ```sbt run``
+- Run the program ```sbt run```
 
 ## Contributors
 
