@@ -101,8 +101,8 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[Relation])
         }
 
       }
-
-      println(foundRelationships)
+      if(foundRelationships.size > 0)
+        println(foundRelationships)
     }
 
 }
