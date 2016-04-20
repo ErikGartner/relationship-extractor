@@ -27,7 +27,7 @@ import scala.collection.mutable
 object RelationExtractor {
 
   def apply(): RelationExtractor = {
-    val relations = Relation.getRelations.get
+    val relations = RelationDefinition.getRelations.get
 
     val props = new Properties()
     props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie")
@@ -38,12 +38,13 @@ object RelationExtractor {
 
 }
 
+case class
 
-class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[Relation]) {
+class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDefinition]) {
 
   def extractRelationsFromText(text: String) = {
 
-      val relations = relationships.flatMap(rel => Relation.getRelationLabels(rel))
+      val relations = relationships.flatMap(rel => RelationDefinition.getRelationLabels(rel))
 
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
