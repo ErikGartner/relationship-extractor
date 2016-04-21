@@ -1,0 +1,23 @@
+#? my wife, wife, I
+#? serving-man, servant, McCarthy
+#? William Crowder, employee, Mr Turner
+#? his son, son, McCarthy
+#? young Mr. McCarthy, son, his father
+#? his father, father, young Mr. McCarthy
+#? he (James McCarthy), son, his father
+#? my father, father, myself (Mr. James McCarthy)
+#? you, son, your father
+#? your father, father, you
+#? his father, father, you McCarthy
+#? his father, father, James
+#? his father, father, James
+#? his father, father, he
+#? his father, father, accused
+#? barmaid, spouse, a husband in the Bermuda Dockyard
+#? his son, son, murdered man
+#? he (Mr. Turner), friend, McCarthy's /we do not support friend relation?
+#? Turner's daughter, daughter, Mr. Turner
+#? I, friend, my friend (Sherlock)
+#? his father, father, he (young McCarthy)
+#? his father, father, young McCarthy
+#? my son, son, me
