@@ -38,13 +38,23 @@ object RelationExtractor {
 
 }
 
-case class
+class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefinition]) {
 
-class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDefinition]) {
+  def extractNamedEntities(document: Annotation): Seq[Person] = {
 
-  def extractRelationsFromText(text: String) = {
+    // Get all sentences.
+    val sentences = document.get(classOf[SentencesAnnotation]).asScala
+    val words = document.get(classOf[TokensAnnotation]).asScala
+    for {word: CoreLabel <- words
+         if word.ner() == "PERSON"
+    } yield {
+        Person(word.lemma(), sentences(word.sentIndex()).toString)
+      }
+  }
 
-      val relations = relationships.flatMap(rel => RelationDefinition.getRelationLabels(rel))
+  def extractRelationsFromText(text: String): mutable.Set[Relation] = {
+
+      val relDefStrings = relDefs.flatMap(rel => RelationDefinition.getRelationLabels(rel))
 
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
@@ -56,7 +66,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDe
       val chains = document.get(classOf[CorefCoreAnnotations.CorefChainAnnotation])
 
       // We store relationsships as ("Subject" "Relationship" "Object")
-      val foundRelationships = mutable.Set[Tuple3[String, String, String]]()
+      val foundRelationships = mutable.Set[Relation]()
 
       // Get all sentences.
       val sentences = document.get(classOf[SentencesAnnotation]).asScala
@@ -67,9 +77,8 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDe
 
         if(oie != null) {
 
-
           for (triple: RelationTriple <- oie.asScala) {
-            for (relation <- relations) {
+            for (relation <- relDefStrings) {
 
               // Check if the relation is one if the sought after
               if (triple.relationLemmaGloss.toLowerCase.contains(relation)) {
@@ -80,21 +89,27 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDe
 
                 var subj = ""
                 var obj = ""
+                var subOrigin = ""
+                var objOrigin = ""
 
                 // resolve coreferences
                 if (subjectCorefId == null) {
                   subj = triple.subjectLemmaGloss()
+                  subOrigin = sentence.toString
                 } else {
                   subj = chains.get(subjectCorefId).getRepresentativeMention().mentionSpan
+                  subOrigin = sentences(chains.get(subjectCorefId).getRepresentativeMention().sentNum).toString
                 }
 
                 if (objectCorefId == null) {
                   obj = triple.objectLemmaGloss()
+                  objOrigin = sentence.toString
                 } else {
                   obj = chains.get(objectCorefId).getRepresentativeMention().mentionSpan
+                  objOrigin = sentences(chains.get(objectCorefId).getRepresentativeMention().sentNum).toString
                 }
 
-                foundRelationships += Tuple3(subj, relation, obj)
+                foundRelationships += Relation(Person(subj, subOrigin), relation, Person(obj, objOrigin), sentence.toString)
 
               }
             }
@@ -102,8 +117,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relationships: Seq[RelationDe
         }
 
       }
-      if(foundRelationships.size > 0)
-        println(foundRelationships)
+      return foundRelationships
     }
 
 }
