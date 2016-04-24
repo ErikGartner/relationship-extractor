@@ -1,0 +1,14 @@
+Metrics
+Recall:
+Precision:
+Fscore:
+
+Results
+# a Mr. John Turner , who made his money in Australia and returned some years ago to the old country, daughter, same age
+# a Mr. John Turner , who made his money in Australia and returned some years ago to the old country, daughter, age
+# Mr. James McCarthy, son, Mr. James McCarthy
+# Turner, daughter, neighbouring landowner
+# James McCarthy, son, deceased
+# idiot, marry, her
+# young McCarthy 's, mum, several word
+# young McCarthy 's, mum, word

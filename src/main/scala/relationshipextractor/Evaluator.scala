@@ -12,10 +12,10 @@ object Evaluator {
       }) last
 
 
-  def fscore(recall: Int, precision: Int) = return 2 * precision.toFloat * recall / (precision + recall)
+  def fscore(recall: Int, precision: Int): Float = return 2 * precision.toFloat * recall / (precision + recall)
 
-  def recall(truePositives: Int, falsePositives: Int) = return truePositives.toFloat / (truePositives + falsePositives)
+  def recall(truePositives: Int, falsePositives: Int): Float = return truePositives.toFloat / (truePositives + falsePositives)
 
-  def precision(truePositives: Int, falseNegatives: Int) = return truePositives.toFloat / (truePositives + falseNegatives)
+  def precision(truePositives: Int, falseNegatives: Int): Float = return truePositives.toFloat / (truePositives + falseNegatives)
 
 }
