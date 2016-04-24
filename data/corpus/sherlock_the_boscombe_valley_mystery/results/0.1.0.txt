@@ -1,7 +1,10 @@
 Metrics
-Recall:
-Precision:
-Fscore:
+TP: 2
+FP: 8
+FN: 7
+Recall: 0.22
+Precision: 0.20
+Fscore: 0.20952381
 
 Results
 # a Mr. John Turner , who made his money in Australia and returned some years ago to the old country, daughter, same age
