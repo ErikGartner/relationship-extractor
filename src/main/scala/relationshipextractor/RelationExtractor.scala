@@ -109,7 +109,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
                   objOrigin = sentences(chains.get(objectCorefId).getRepresentativeMention().sentNum).toString
                 }
 
-                foundRelationships += Relation(Person(subj, subOrigin), relation, Person(obj, objOrigin), sentence.toString)
+                foundRelationships += Relation(Person(subj.trim(), subOrigin), relation.trim(), Person(obj.trim(), objOrigin), sentence.toString)
 
               }
             }

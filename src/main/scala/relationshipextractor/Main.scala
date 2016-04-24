@@ -7,6 +7,8 @@ object Main extends App {
   val paragraphs = text.split("\n\n")
 
   paragraphs.foreach(p => extractor.extractRelationsFromText(p).foreach(r =>
-    println(s"---------------------------\n$r")
+    //println(s"---------------------------\n$r")
+    println("# " + r.subject.name + ", " + r.relationship + ", " + r.obj.name)
   ))
 }
+
