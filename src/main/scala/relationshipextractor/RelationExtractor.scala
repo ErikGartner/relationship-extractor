@@ -54,8 +54,6 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
 
   def extractRelationsFromText(text: String): mutable.Set[Relation] = {
 
-      val relDefStrings = relDefs.flatMap(rel => RelationDefinition.getRelationLabels(rel))
-
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
 
@@ -78,10 +76,14 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
         if(oie != null) {
 
           for (triple: RelationTriple <- oie.asScala) {
-            for (relation <- relDefStrings) {
+
+            for {relation: RelationDefinition <- relDefs
+                 relString <- RelationDefinition.getRelationLabels(relation)} {
+
+              val reg = s"\\b$relString\\b".r
 
               // Check if the relation is one if the sought after
-              if (triple.relationLemmaGloss.toLowerCase.contains(relation)) {
+              if (reg.findFirstIn(triple.relationLemmaGloss.toLowerCase).nonEmpty) {
 
                 // Check if subject or object is an coreference
                 val subjectCorefId = triple.subjectHead().get(classOf[CorefCoreAnnotations.CorefClusterIdAnnotation])
@@ -109,7 +111,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
                   objOrigin = sentences(chains.get(objectCorefId).getRepresentativeMention().sentNum).toString
                 }
 
-                foundRelationships += Relation(Person(subj.trim(), subOrigin), relation.trim(), Person(obj.trim(), objOrigin), sentence.toString)
+                foundRelationships += Relation(Person(subj.trim(), subOrigin), relation.title, Person(obj.trim(), objOrigin), sentence.toString)
 
               }
             }
