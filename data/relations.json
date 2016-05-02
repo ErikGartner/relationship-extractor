@@ -18,7 +18,7 @@
     "id": "P1290",
     "description": "person who is the godparent of a given person",
     "english": ["godmother", "godfather"],
-    "swedish": ["gudfar", "dumor", "gudson", "gudfader", "gudmoder", "gudförälder", "guddotter"]
+    "swedish": ["gudfar", "gudmor", "gudson", "gudfader", "gudmoder", "gudförälder", "guddotter"]
   },
   {
     "title": "relative",
