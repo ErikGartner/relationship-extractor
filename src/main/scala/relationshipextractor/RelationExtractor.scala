@@ -40,19 +40,20 @@ object RelationExtractor {
 
 class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefinition]) {
 
-  def extractNamedEntities(document: Annotation): Seq[Person] = {
+  def extractNamedEntities(document: Annotation): mutable.Set[Person] = {
 
     // Get all sentences.
     val sentences = document.get(classOf[SentencesAnnotation]).asScala
     val words = document.get(classOf[TokensAnnotation]).asScala
-    for {word: CoreLabel <- words
+    val persons = for {word: CoreLabel <- words
          if word.ner() == "PERSON"
     } yield {
         Person(word.lemma(), sentences(word.sentIndex()).toString)
       }
+    return mutable.Set[Person](persons.toArray:_*)
   }
 
-  def extractRelationsFromText(text: String): mutable.Set[Relation] = {
+  def extractRelationsFromText(text: String): Set[Person] = {
 
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
@@ -60,11 +61,11 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
       // run all Annotators on this text
       pipeline.annotate(document)
 
+      // Find all NER
+      val persons = extractNamedEntities(document)
+
       // These are all corefchains in the document used to resolve corefs.
       val chains = document.get(classOf[CorefCoreAnnotations.CorefChainAnnotation])
-
-      // We store relationsships as ("Subject" "Relationship" "Object")
-      val foundRelationships = mutable.Set[Relation]()
 
       // Get all sentences.
       val sentences = document.get(classOf[SentencesAnnotation]).asScala
@@ -77,49 +78,69 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
 
           for (triple: RelationTriple <- oie.asScala) {
 
-            for {relation: RelationDefinition <- relDefs
-                 relString <- RelationDefinition.getRelationLabels(relation)} {
+            matchOIETriple(triple, persons, sentence, sentences, chains)
 
-              val reg = s"\\b$relString\\b".r
-
-              // Check if the relation is one if the sought after
-              if (reg.findFirstIn(triple.relationLemmaGloss.toLowerCase).nonEmpty) {
-
-                // Check if subject or object is an coreference
-                val subjectCorefId = triple.subjectHead().get(classOf[CorefCoreAnnotations.CorefClusterIdAnnotation])
-                val objectCorefId = triple.objectHead().get(classOf[CorefCoreAnnotations.CorefClusterIdAnnotation])
-
-                var subj = ""
-                var obj = ""
-                var subOrigin = ""
-                var objOrigin = ""
-
-                // resolve coreferences
-                if (subjectCorefId == null) {
-                  subj = triple.subjectLemmaGloss()
-                  subOrigin = sentence.toString
-                } else {
-                  subj = chains.get(subjectCorefId).getRepresentativeMention().mentionSpan
-                  subOrigin = sentences(chains.get(subjectCorefId).getRepresentativeMention().sentNum).toString
-                }
-
-                if (objectCorefId == null) {
-                  obj = triple.objectLemmaGloss()
-                  objOrigin = sentence.toString
-                } else {
-                  obj = chains.get(objectCorefId).getRepresentativeMention().mentionSpan
-                  objOrigin = sentences(chains.get(objectCorefId).getRepresentativeMention().sentNum).toString
-                }
-
-                foundRelationships += Relation(Person(subj.trim(), subOrigin), relation.title, Person(obj.trim(), objOrigin), sentence.toString)
-
-              }
-            }
           }
         }
 
       }
-      return foundRelationships
+      return persons.toSet
+    }
+
+    def matchOIETriple(triple: RelationTriple, persons: mutable.Set [Person], sentence: CoreMap, sentences: mutable.Buffer[CoreMap], chains: util.Map[Integer, CorefChain]) = {
+
+      for {relation: RelationDefinition <- relDefs
+           relString <- RelationDefinition.getRelationLabels(relation)} {
+
+        val reg = s"\\b$relString\\b".r
+
+        // Check if the relation is one if the sought after
+        if (reg.findFirstIn(triple.relationLemmaGloss.toLowerCase).nonEmpty) {
+
+          // Check if subject or object is an coreference
+          val subjectCorefId = triple.subjectHead().get(classOf[CorefCoreAnnotations.CorefClusterIdAnnotation])
+          val objectCorefId = triple.objectHead().get(classOf[CorefCoreAnnotations.CorefClusterIdAnnotation])
+
+          var subj = ""
+          var obj = ""
+          var subOrigin = ""
+          var objOrigin = ""
+
+          // resolve coreferences
+          if (subjectCorefId == null) {
+            subj = triple.subjectLemmaGloss()
+            subOrigin = sentence.toString
+          } else {
+            subj = chains.get(subjectCorefId).getRepresentativeMention().mentionSpan
+            subOrigin = sentences(chains.get(subjectCorefId).getRepresentativeMention().sentNum).toString
+          }
+
+          val subjPerson = persons.
+            filter(p => p.name.equals(subj) || p.mentions.contains(subj)).
+            headOption.
+            getOrElse(Person(subj, subOrigin))
+
+          if (objectCorefId == null) {
+            obj = triple.objectLemmaGloss()
+            objOrigin = sentence.toString
+          } else {
+            obj = chains.get(objectCorefId).getRepresentativeMention().mentionSpan
+            objOrigin = sentences(chains.get(objectCorefId).getRepresentativeMention().sentNum).toString
+          }
+
+          val objPerson = persons.
+            filter(p => p.name.equals(obj) || p.mentions.contains(obj)).
+            headOption.
+            getOrElse(Person(obj, objOrigin))
+
+          val r = Relation(subjPerson, relation.title, objPerson, sentence.toString)
+          subjPerson.relations.add(r)
+          persons.add(subjPerson)
+          persons.add(objPerson)
+
+        }
+      }
+
     }
 
 }

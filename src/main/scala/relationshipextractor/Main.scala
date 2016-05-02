@@ -5,15 +5,9 @@ object Main extends App {
   val extractor = RelationExtractor()
   val text:String = scala.io.Source.fromFile("data/corpus/sherlock_the_boscombe_valley_mystery/corpus.txt").mkString
   val paragraphs = text.split("\n\n")
-  paragraphs.sliding(2,1).foreach {
-    twoPs => extractor.extractRelationsFromText(twoPs.mkString(" ")).foreach(r =>
-      println("# " + r.subject.name + ", " + r.relationship + ", " + r.obj.name)
-    )
-  }
 
-  // paragraphs.foreach(p => extractor.extractRelationsFromText(p).foreach(r =>
-  //   //println(s"---------------------------\n$r")
-  //   println("# " + r.subject.name + ", " + r.relationship + ", " + r.obj.name)
-  // ))
+  paragraphs.foreach(p => extractor.extractRelationsFromText(p).foreach(r =>
+    r.sentence
+  ))
 }
 
