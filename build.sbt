@@ -24,6 +24,8 @@ resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.4"
 
 
-// Uncomment to use Akka
-//libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.11"
+libraryDependencies += "org.graphstream" % "gs-core" % "1.3"
+libraryDependencies += "org.graphstream" % "gs-ui" % "1.3"
+libraryDependencies += "org.graphstream" % "gs-algo" % "1.3"
+
 
