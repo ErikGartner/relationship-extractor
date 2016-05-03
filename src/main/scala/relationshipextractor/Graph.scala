@@ -25,8 +25,8 @@ object Graph extends App {
     graph.setAutoCreate(true)
     graph.setStrict(false)
     graph.display()
-    addPersons(Seq(Person("Turner", "Some setne")))
-    addRelations(Seq(
+    addPerson(Person("Turner", "Some setne"))
+    Seq(
         Relation(Person("Turner", "Some sentence"),
             "child",
             Person("neighbouring landowner", "Some sentence"),
@@ -39,28 +39,20 @@ object Graph extends App {
             "child",
             Person("same age", "Some sm"),
             "Some sen")
-        )
-    )
+        ).foreach(addRelation _)
 
-    private def addRelationToGraph(relation: Relation) {
-        val a: Node = addPersonToGraph(relation.subject)
-        val b: Node = addPersonToGraph(relation.obj)
+    def addRelation(relation: Relation) {
+        val a: Node = addPerson(relation.subject)
+        val b: Node = addPerson(relation.obj)
         val edge: Edge = graph.addEdge(relation.hashCode.toString, a, b, true)
         edge.setAttribute("ui.label", relation.relationship)
     }
 
-    private def addPersonToGraph(person: Person): Node = {
+    def addPerson(person: Person): Node = {
+        println(s"Adding person to graph: ${person}!!!")
         val theNode: Node = graph.addNode(person.hashCode.toString)
         theNode.addAttribute("sentence", person.sentence)
         theNode.addAttribute("ui.label", person.name)
         theNode
-    }
-
-    def addRelations(relations: Seq[Relation]) {
-        relations.foreach(addRelationToGraph(_))
-    }
-
-    def addPersons(persons: Seq[Person]) {
-        persons.foreach(addPersonToGraph(_))
     }
 }
