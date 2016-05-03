@@ -1,4 +1,4 @@
-name := """text-miner"""
+name := """relationshipextrator"""
 
 version := "0.1"
 
