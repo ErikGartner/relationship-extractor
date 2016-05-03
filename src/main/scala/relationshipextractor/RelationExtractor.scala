@@ -57,7 +57,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
       }
   }
 
-  def extractRelationsFromText(text: String, persons: mutable.Set[Person]): Set[Person] = {
+  def extractRelationsFromText(text: String, persons: mutable.Set[Person]) = {
 
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
@@ -88,7 +88,6 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
         }
 
       }
-      return persons.toSet
     }
 
     def matchOIETriple(triple: RelationTriple, persons: mutable.Set [Person], sentence: CoreMap, sentences: mutable.Buffer[CoreMap], chains: util.Map[Integer, CorefChain]) = {
@@ -122,7 +121,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
           val subjPerson = persons.
             filter(p => p.name.equals(subj) || p.mentions.contains(subj)).
             headOption.
-            getOrElse(Person(subj, subOrigin))
+            getOrElse(Person(subj, subOrigin, mentions = mutable.Set(subj)))
 
           if (objectCorefId == null) {
             obj = triple.objectLemmaGloss()
@@ -135,7 +134,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
           val objPerson = persons.
             filter(p => p.name.equals(obj) || p.mentions.contains(obj)).
             headOption.
-            getOrElse(Person(obj, objOrigin))
+            getOrElse(Person(obj, objOrigin, mentions = mutable.Set(obj)))
 
           val r = Relation(subjPerson, relation.title, objPerson, sentence.toString)
           subjPerson.relations.add(r)
