@@ -40,20 +40,24 @@ object RelationExtractor {
 
 class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefinition]) {
 
-  def extractNamedEntities(document: Annotation): mutable.Set[Person] = {
+  def extractNamedEntities(document: Annotation, persons: mutable.Set[Person]) = {
 
     // Get all sentences.
     val sentences = document.get(classOf[SentencesAnnotation]).asScala
     val words = document.get(classOf[TokensAnnotation]).asScala
-    val persons = for {word: CoreLabel <- words
+    for {word: CoreLabel <- words
          if word.ner() == "PERSON"
-    } yield {
-        Person(word.lemma(), sentences(word.sentIndex()).toString)
+    } {
+        val person = persons.
+        filter(p => p.name.equals(word.lemma()) || p.mentions.contains(word.lemma())).
+        headOption.
+        getOrElse(Person(word.lemma(), sentences(word.sentIndex()).toString))
+        person.mentions.add(word.lemma())
+        persons.add(person)
       }
-    return mutable.Set[Person](persons.toArray:_*)
   }
 
-  def extractRelationsFromText(text: String): Set[Person] = {
+  def extractRelationsFromText(text: String, persons: mutable.Set[Person]): Set[Person] = {
 
       // create an empty Annotation just with the given text
       val document = new Annotation(text)
@@ -62,7 +66,7 @@ class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefiniti
       pipeline.annotate(document)
 
       // Find all NER
-      val persons = extractNamedEntities(document)
+      extractNamedEntities(document, persons)
 
       // These are all corefchains in the document used to resolve corefs.
       val chains = document.get(classOf[CorefCoreAnnotations.CorefChainAnnotation])
