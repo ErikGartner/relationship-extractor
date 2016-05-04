@@ -10,7 +10,6 @@ object Main extends App {
 
 
   val persons: mutable.Set[Person] = mutable.Set[Person]()
-
   paragraphs.foreach(p => extractor.extractRelationsFromText(p, persons))
   persons.foreach(p => {
     Graph.addPerson(p)
