@@ -34,7 +34,6 @@ object Graph {
   }
 
   def addPerson(person: Person): Node = {
-    println(s"Adding person to graph: ${person}!!!")
     val theNode: Node = graph.addNode(person.hashCode.toString)
     theNode.addAttribute("sentence", person.sentence)
     theNode.addAttribute("ui.label", person.name)

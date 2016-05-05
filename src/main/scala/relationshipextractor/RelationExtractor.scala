@@ -15,7 +15,7 @@ import edu.stanford.nlp.semgraph.SemanticGraph
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation
 import edu.stanford.nlp.trees.Tree
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation
-import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP, StanfordCoreNLPClient}
 import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.hcoref.CorefCoreAnnotations
 import edu.stanford.nlp.hcoref.data.CorefChain
@@ -32,13 +32,14 @@ object RelationExtractor {
     val props = new Properties()
     props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie")
     props.setProperty("timeout", "600000")
-    val pipeline = new StanfordCoreNLP(props)
+    // val pipeline = new StanfordCoreNLP(props)
+    val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 4)
     return new RelationExtractor(pipeline, relations)
   }
 
 }
 
-class RelationExtractor(pipeline: StanfordCoreNLP, relDefs: Seq[RelationDefinition]) {
+class RelationExtractor(pipeline: StanfordCoreNLPClient, relDefs: Seq[RelationDefinition]) {
 
   def extractNamedEntities(document: Annotation, persons: mutable.Set[Person]) = {
 
