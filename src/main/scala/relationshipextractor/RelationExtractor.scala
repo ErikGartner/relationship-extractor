@@ -137,7 +137,7 @@ class RelationExtractor(pipeline: StanfordCoreNLPClient, relDefs: Seq[RelationDe
             headOption.
             getOrElse(Person(obj, objOrigin, mentions = mutable.Set(obj)))
 
-          val r = Relation(subjPerson, relation.title, objPerson, sentence.toString)
+          val r = Relation(subjPerson, relString, relation, objPerson, sentence.toString)
           subjPerson.relations.add(r)
           persons.add(subjPerson)
           persons.add(objPerson)
