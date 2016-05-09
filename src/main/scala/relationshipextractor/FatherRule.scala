@@ -36,7 +36,6 @@ class InferFather extends RelationshipRule {
       // TODO also change the RelationDefinition
       val newRelation = relation.copy(subject = relation.obj, obj = relation.subject, relationship = "father")
       relation.obj.relations.add(newRelation)
-      // Graph.addRelation(newRelation)
       println(s"calling Graph.addRelation with ${newRelation}")
     })
   }
