@@ -15,7 +15,6 @@ class InferFather extends RelationshipRule {
   }
 
   override def input(person: Person) {
-    fired = false
     this.person = person
   }
 
@@ -34,9 +33,11 @@ class InferFather extends RelationshipRule {
   def addRelation() {
     person.relations.filter(_.relationship == "son").foreach(relation => {
       fired = true
+      // TODO also change the RelationDefinition
       val newRelation = relation.copy(subject = relation.obj, obj = relation.subject, relationship = "father")
       relation.obj.relations.add(newRelation)
-      Graph.addRelation(newRelation)
+      // Graph.addRelation(newRelation)
+      println(s"calling Graph.addRelation with ${newRelation}")
     })
   }
 }

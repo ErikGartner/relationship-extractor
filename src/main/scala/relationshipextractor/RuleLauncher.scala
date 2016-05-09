@@ -22,7 +22,8 @@ object Launcher extends App {
   val theSon = Person("the son", "the sentence")
   val theFather = Person("the father", "the sentence")
   val relation = Relation(theSon, "son", RelationDefinition.getRelations.get(0), theFather, "the sentence")
-  Graph.addRelation(relation)
+  theSon.relations.add(relation)
+  theSon.relations.foreach(Graph.addRelation(_))
 
   val inferFather: InferFather = new InferFather
   inferFather.input(theSon)
