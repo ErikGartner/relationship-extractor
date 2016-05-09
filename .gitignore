@@ -11,7 +11,7 @@ server.log
 # sbt specific
 .cache
 .history
-.lib/
+.lib/stanford-corenlp-models-current.jar
 dist/*
 target/
 lib_managed/
