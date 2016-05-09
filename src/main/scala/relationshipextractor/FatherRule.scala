@@ -3,13 +3,27 @@ package relationshipextractor
 import org.easyrules.annotation._
 
 @Rule(name= "InferFather",
-  description = "Infer Father and Son relations, adds to the Graph")
-class InferFather(relation: Relation) {
+  description = "Infer Father and Son/Daughter relations, adds to the Graph")
+class InferFather extends RelationshipRule {
+  var fired = false
+  var person: Person = _
 
   @Condition
   def checkIfFatherRelation(): Boolean = {
-    relation.relationship == "son"
+    // TODO: check gender of parent
+    person.relations exists (_.relationship == "son")
   }
+
+  override def input(person: Person) {
+    fired = false
+    this.person = person
+  }
+
+  override def resetHasFired() {
+    fired = false
+  }
+
+  override def hasFired(): Boolean = fired
 
   /**
   * subject is son to obj, create a new relation that is a copy
@@ -18,7 +32,11 @@ class InferFather(relation: Relation) {
   @Action
   @throws(classOf[Exception])
   def addRelation() {
-    Graph.addRelation(
-      relation.copy(subject = relation.obj, obj = relation.subject, relationship = "father"))
+    person.relations.filter(_.relationship == "son").foreach(relation => {
+      fired = true
+      val newRelation = relation.copy(subject = relation.obj, obj = relation.subject, relationship = "father")
+      relation.obj.relations.add(newRelation)
+      Graph.addRelation(newRelation)
+    })
   }
 }
