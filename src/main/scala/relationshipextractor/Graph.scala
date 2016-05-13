@@ -7,6 +7,7 @@ import scala.collection.JavaConverters._
 
 object Graph {
   val graph: Graph = new SingleGraph("tutorial 1")
+  var i: Int = 0
   val styleSheet: String =
     """
     node {
@@ -30,7 +31,8 @@ object Graph {
   def addRelation(relation: Relation) {
     val a: Node = addPerson(relation.subject)
     val b: Node = addPerson(relation.obj)
-    val edge: Edge = graph.addEdge(relation.hashCode.toString, a, b, true)
+    i = i + 1
+    val edge: Edge = graph.addEdge(i.toString, a, b, true)
     try {
       edge.setAttribute("ui.label", relation.relationship)
     } catch {
