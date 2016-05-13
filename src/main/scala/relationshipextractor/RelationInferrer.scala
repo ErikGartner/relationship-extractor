@@ -15,15 +15,15 @@ object RelationInferrer {
     val rules = Seq[RelationshipRule](new InferFather())
     rules.foreach(r => rulesEngine.registerRule(r))
 
-    do {
+    //do {
       rules.foreach(r => r.resetHasFired())
 
       for(person <- persons){
         rules.foreach(r => r.input(person))
         rulesEngine.fireRules
       }
-      
-    } while(rules.exists(r => r.hasFired()))
+
+   // } while(rules.exists(r => r.hasFired()))
 
   }
 
