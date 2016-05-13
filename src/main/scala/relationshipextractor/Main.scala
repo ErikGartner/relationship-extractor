@@ -11,10 +11,14 @@ object Main extends App {
     val paragraphs = text.split("\n\n")
 
     val persons: mutable.Set[Person] = mutable.Set[Person]()
-    paragraphs.foreach(p => extractor.extractRelationsFromText(p, persons))
-    persons.foreach(p => {
-        Graph.addPerson(p)
-        p.relations foreach (Graph.addRelation(_))
+    paragraphs.foreach(p => {
+      extractor.extractRelationsFromText(p, persons)
+      persons.foreach(person => {
+        Graph.addPerson(person)
+        person.relations foreach (Graph.addRelation(_))
+        })
     })
+
+    RelationInferrer.infer(persons)
 }
 

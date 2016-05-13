@@ -23,6 +23,7 @@ object Graph {
     """
   graph.addAttribute("ui.stylesheet", styleSheet)
   graph.setAutoCreate(true)
+  graph.setNullAttributesAreErrors(true);
   graph.setStrict(false)
   graph.display()
 
@@ -30,7 +31,12 @@ object Graph {
     val a: Node = addPerson(relation.subject)
     val b: Node = addPerson(relation.obj)
     val edge: Edge = graph.addEdge(relation.hashCode.toString, a, b, true)
-    edge.addAttribute("ui.label", relation.relationship)
+    try {
+      edge.setAttribute("ui.label", relation.relationship)
+    } catch {
+      case nullEx: NullAttributeException => {}
+      case e: Exception => {}
+    }
   }
 
   def addPerson(person: Person): Node = {
