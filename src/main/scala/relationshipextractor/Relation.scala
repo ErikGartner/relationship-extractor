@@ -19,11 +19,11 @@ case class Person(var name: String, sentence: String,
 case class Relation(subject: Person, relationship: String, relationDefinition: RelationDefinition, obj: Person, sentence: String) {
 
     override def toString(): String = {
-        return s"Relation: $relationship\n\nObject: ${obj.name}\n\nSentence: $sentence"
+        return s"${subject.name}; $relationship; ${obj.name}"
     }
 
     override def hashCode(): Int = {
-        return sentence.hashCode()
+      sentence.hashCode()
     }
 
 }

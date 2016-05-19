@@ -11,6 +11,7 @@ class InferFather extends RelationshipRule {
   @Condition
   def checkIfFatherRelation(): Boolean = {
     // TODO: check gender of parent
+    /*println(s"CHECKING person: $person")*/
     person.relations exists (_.relationship == "son")
   }
 
@@ -36,7 +37,7 @@ class InferFather extends RelationshipRule {
       // TODO also change the RelationDefinition
       val newRelation = relation.copy(subject = relation.obj, obj = relation.subject, relationship = "father")
       relation.obj.relations.add(newRelation)
-      println(s"calling Graph.addRelation with ${newRelation}")
+     /* println(s"calling Graph.addRelation with ${newRelation}")*/
     })
   }
 }

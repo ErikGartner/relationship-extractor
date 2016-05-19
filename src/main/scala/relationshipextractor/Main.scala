@@ -15,7 +15,10 @@ object Main extends App {
     RelationInferrer.infer(persons)
     persons.foreach(p => {
         Graph.addPerson(p)
-        p.relations foreach (Graph.addRelation(_))
+        p.relations foreach (rel => {
+          Graph.addRelation(rel)
+          println(rel)
+        })
     })
 }
 

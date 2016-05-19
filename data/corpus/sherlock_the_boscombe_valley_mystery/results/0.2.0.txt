@@ -1,0 +1,13 @@
+Metrics
+TP: 2
+FP: 3
+FN: 7
+Recall: 0.22222
+Precision: 0.4
+Fscore: 0.2856959
+# Turner; daughter; neighbouring landowner
+# his son to marry my daughter with as little regard for what she might think as if she were a slut from off the streets; marry; my daughter
+# James McCarthy; son; deceased
+# a Mr. John Turner , who made his money in Australia and returned some years ago to the old country; daughter; same age
+# a Mr. John Turner , who made his money in Australia and returned some years ago to the old country; daughter; age
+# deceased; father; James McCarthy

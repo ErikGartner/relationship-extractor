@@ -30,10 +30,10 @@ object RelationExtractor {
     val relations = RelationDefinition.getRelations.get
 
     val props = new Properties()
-    props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, coref, natlog, openie")
+    props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, depparse, coref, natlog, openie")
     props.setProperty("timeout", "600000")
     val pipeline = new StanfordCoreNLP(props)
-    //val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 4)
+    // val pipeline = new StanfordCoreNLPClient(props, "localhost", 9000, 4)
     return new RelationExtractor(pipeline, relations)
   }
 

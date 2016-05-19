@@ -5,4 +5,4 @@ unmanagedClasspath="./target/streams/runtime/unmanagedJars/\$global/streams/expo
 # Using server defined in build.sbt
 # java -mx4g -cp "$(< $managedClasspath)" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
 # TODO: Make this actually work:Using server from lib, i.e. latest from HEAD as of 5 May 2016
-java -mx4g -cp "$(< ${unmanagedClasspath}):$(< ${managedClasspath})" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
+java -mx12g -cp "$(< ${unmanagedClasspath}):$(< ${managedClasspath})" edu.stanford.nlp.pipeline.StanfordCoreNLPServer

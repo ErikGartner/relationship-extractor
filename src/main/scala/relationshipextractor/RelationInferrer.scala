@@ -11,7 +11,7 @@ object RelationInferrer {
 
   def infer(persons: mutable.Set[Person]) = {
 
-    val rulesEngine = RulesEngineBuilder.aNewRulesEngine().build()
+    val rulesEngine = RulesEngineBuilder.aNewRulesEngine().withSilentMode(true).build()
     val rules = Seq[RelationshipRule](new InferFather())
     rules.foreach(r => rulesEngine.registerRule(r))
 
